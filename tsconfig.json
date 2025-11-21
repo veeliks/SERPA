@@ -11,13 +11,7 @@
 		"skipLibCheck": true,
 		"isolatedModules": true,
 		"esModuleInterop": true,
-		"allowSyntheticDefaultImports": true,
-
-		"paths": {
-			"@app": ["./src/app.tsx"],
-			"@features/*": ["./src/features/*"],
-			"@services/*": ["./src/services/*"]
-		}
+		"allowSyntheticDefaultImports": true
 	},
 
 	"$schema": "https://json.schemastore.org/tsconfig"
