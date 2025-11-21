@@ -21,14 +21,15 @@
 	"devDependencies": {
 		"@biomejs/biome": "latest",
 		"@iconify/json": "latest",
-		"@types/chrome": "latest",
 		"@types/node": "latest",
+		"@types/webextension-polyfill": "latest",
 		"browserslist": "latest",
 		"lightningcss": "latest",
 		"typescript": "latest",
 		"unocss": "latest",
 		"vite-plugin-solid": "latest",
-		"vite": "latest"
+		"vite": "latest",
+		"webextension-polyfill": "latest"
 	},
 
 	"$schema": "https://json.schemastore.org/package"

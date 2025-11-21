@@ -4,7 +4,6 @@
 	"manifest_version": 3,
 	"version": "0.0.1",
 	"permissions": ["activeTab", "scripting"],
-	"host_permissions": ["<all_urls>"],
 	"action": {
 		"default_popup": "index.html",
 		"default_icon": "serpy.png"

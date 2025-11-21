@@ -1,5 +1,3 @@
-/// <reference types="@types/chrome" />
-
 import { defineConfig } from "vite";
 import { default as uno } from "unocss/vite";
 import { default as solid } from "vite-plugin-solid";

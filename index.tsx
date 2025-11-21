@@ -3,6 +3,58 @@
 import "virtual:uno.css";
 import { render } from "solid-js/web";
 import { createMemo, createResource, Show } from "solid-js";
+import { default as browser } from "webextension-polyfill";
+
+type Metadata = {
+	url: string | undefined;
+	title: string | undefined;
+	description: string | undefined;
+	favicon: string | undefined;
+};
+
+const fetchPageMetadata = async (): Promise<Metadata> => {
+	const [tab] = await browser.tabs.query({ active: true, currentWindow: true });
+
+	if (!tab.id) {
+		throw new Error("No active tab");
+	}
+
+	const favicon = tab.favIconUrl;
+
+	try {
+		const [query] = await browser.scripting.executeScript({
+			target: { tabId: tab.id },
+			func: () => {
+				const getMeta = (name: string) => {
+					const element = document.querySelector(`meta[name="${name}"], meta[property="${name}"]`);
+					return element instanceof HTMLMetaElement ? element.content : String();
+				};
+
+				return {
+					url: window.location.href,
+					title: document.title,
+					description: getMeta("description"),
+				};
+			},
+		});
+
+		if (!query?.result) {
+			throw Error("Failed to get results from query");
+		}
+
+		return {
+			...(query.result as Omit<Metadata, "favicon">),
+			favicon,
+		};
+	} catch (_) {
+		return {
+			url: tab.url,
+			title: tab.title,
+			description: String(),
+			favicon,
+		};
+	}
+};
 
 const stripTrailingSlash = (url: string) => {
 	return url.endsWith("/") ? url.slice(0, -1) : url;
@@ -34,41 +86,8 @@ const formatURL = (value: string) => {
 	}
 };
 
-const fetchPageMetadata = async () => {
-	const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-
-	if (!tab.id) {
-		throw new Error("No active tab");
-	}
-
-	const [query] = await chrome.scripting.executeScript({
-		target: { tabId: tab.id },
-		func: () => {
-			const getMeta = (name: string) => {
-				const element = document.querySelector(`meta[name="${name}"], meta[property="${name}"]`);
-				return element instanceof HTMLMetaElement ? element.content : String();
-			};
-
-			return {
-				url: window.location.href,
-				title: document.title,
-				description: getMeta("description"),
-			};
-		},
-	});
-
-	if (!query?.result) {
-		throw new Error("Failed to fetch metadata");
-	}
-
-	return {
-		...query.result,
-		favicon: tab.favIconUrl || undefined,
-	};
-};
-
 const Index = () => {
-	const [metadata, { mutate }] = createResource(fetchPageMetadata);
+	const [metadata, { mutate, refetch }] = createResource(fetchPageMetadata);
 
 	const getURL = createMemo(() => {
 		const state = metadata();
@@ -103,7 +122,14 @@ const Index = () => {
 				{(state) => (
 					<>
 						<section class="flex flex-col gap-xs">
-							<label class="flex flex-col gap-1 p-2 b b-neutral-400 rounded-0.5">
+							<button
+								type="button"
+								class="cursor-pointer p-2 b b-neutral-400 dark:b-neutral-600 rounded-0.5"
+								textContent="Refresh Data"
+								onClick={refetch}
+							/>
+
+							<label class="flex flex-col gap-1 p-2 b b-neutral-400 dark:b-neutral-600 rounded-0.5">
 								<span class="text-xs font-bold text-neutral-600 dark:text-neutral-400">Title</span>
 								<input
 									type="text"
@@ -113,7 +139,7 @@ const Index = () => {
 								/>
 							</label>
 
-							<label class="flex flex-col gap-1 p-2 b b-neutral-400 rounded-0.5">
+							<label class="flex flex-col gap-1 p-2 b b-neutral-400 dark:b-neutral-600 rounded-0.5">
 								<span class="text-xs font-bold text-neutral-600 dark:text-neutral-400">
 									Description
 								</span>
@@ -126,7 +152,7 @@ const Index = () => {
 								</div>
 							</label>
 
-							<label class="flex flex-col gap-1 p-2 b b-neutral-400 rounded-0.5">
+							<label class="flex flex-col gap-1 p-2 b b-neutral-400 dark:b-neutral-600 rounded-0.5">
 								<span class="text-xs font-bold text-neutral-600 dark:text-neutral-400">URL</span>
 								<input
 									type="text"
@@ -157,10 +183,13 @@ const Index = () => {
 							</div>
 
 							<div class="flex flex-col gap-1 min-w-0">
-								<span class="text-xl text-blue-800 dark:text-blue-200 truncate">{getTitle()}</span>
-								{state().description && (
+								<span class="text-xl text-blue-800 dark:text-blue-200 truncate hover:(underline)">
+									{getTitle()}
+								</span>
+
+								<Show when={state().description && state().description !== String()}>
 									<span class="text-sm line-clamp-2">{state().description}</span>
-								)}
+								</Show>
 							</div>
 						</section>
 					</>
