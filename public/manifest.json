@@ -3,6 +3,7 @@
 	"version": "0.1.0",
 	"manifest_version": 3,
 	"description": "Simulate website appearance in Google search",
+	"author": "Felix Karhusaari",
 	"permissions": ["activeTab", "scripting"],
 	"icons": {
 		"16": "icon_16.png",
