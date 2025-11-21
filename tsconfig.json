@@ -1,0 +1,24 @@
+{
+	"compilerOptions": {
+		"baseUrl": ".",
+		"target": "ESNext",
+		"module": "ESNext",
+		"jsx": "preserve",
+		"jsxImportSource": "solid-js",
+		"moduleResolution": "bundler",
+		"strict": true,
+		"noEmit": true,
+		"skipLibCheck": true,
+		"isolatedModules": true,
+		"esModuleInterop": true,
+		"allowSyntheticDefaultImports": true,
+
+		"paths": {
+			"@app": ["./src/app.tsx"],
+			"@features/*": ["./src/features/*"],
+			"@services/*": ["./src/services/*"]
+		}
+	},
+
+	"$schema": "https://json.schemastore.org/tsconfig"
+}

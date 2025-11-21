@@ -1,0 +1,35 @@
+{
+	"type": "module",
+	"browserslist": "baseline widely available",
+
+	"scripts": {
+		"dev": "vite",
+		"build": "vite build",
+		"serve": "vite preview",
+		"check": "biome check . && tsc --noEmit",
+		"format": "biome format . --write"
+	},
+
+	"dependencies": {
+		"solid-js": "latest"
+	},
+
+	"overrides": {
+		"vite": "npm:rolldown-vite@latest"
+	},
+
+	"devDependencies": {
+		"@biomejs/biome": "latest",
+		"@iconify/json": "latest",
+		"@types/chrome": "latest",
+		"@types/node": "latest",
+		"browserslist": "latest",
+		"lightningcss": "latest",
+		"typescript": "latest",
+		"unocss": "latest",
+		"vite-plugin-solid": "latest",
+		"vite": "latest"
+	},
+
+	"$schema": "https://json.schemastore.org/package"
+}
