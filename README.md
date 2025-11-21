@@ -1,7 +1,6 @@
 # SERPA
 
-A browser extension that simulates how a website appears in Google search results. Edit the title, description, and URL to
-preview different variations. 
+Browser extension to simulate website appearance in Google Search.
 
 ---
 
