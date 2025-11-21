@@ -131,6 +131,7 @@ const Index = () => {
 
 							<label class="flex flex-col gap-1 p-2 b b-neutral-400 dark:b-neutral-600 rounded-0.5">
 								<span class="text-xs font-bold text-neutral-600 dark:text-neutral-400">Title</span>
+
 								<input
 									type="text"
 									class="outline-none"
@@ -143,6 +144,7 @@ const Index = () => {
 								<span class="text-xs font-bold text-neutral-600 dark:text-neutral-400">
 									Description
 								</span>
+
 								<div class="flex max-h-40 overflow-y-auto no-scrollbar">
 									<textarea
 										value={state().description}
@@ -154,6 +156,7 @@ const Index = () => {
 
 							<label class="flex flex-col gap-1 p-2 b b-neutral-400 dark:b-neutral-600 rounded-0.5">
 								<span class="text-xs font-bold text-neutral-600 dark:text-neutral-400">URL</span>
+
 								<input
 									type="text"
 									class="outline-none"
